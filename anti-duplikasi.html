@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ANTI DUPLIKASI PERSONEL UNIT POLSATWA</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #eef2f7;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    /* Header dengan background gradient */
+    .header {
+      background: linear-gradient(to right, #003366, #0055a5);
+      color: #fff;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 1px;
+    }
+    /* Container Utama */
+    .container {
+      width: 95%;
+      max-width: 1200px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    input[type="text"],
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    select:focus {
+      border-color: #0055a5;
+      outline: none;
+    }
+    button {
+      background-color: #003366;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-right: 10px;
+    }
+    button:hover {
+      background-color: #0055a5;
+    }
+    .warning {
+      color: red;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+    .search-container {
+      margin: 20px 0;
+    }
+    .search-container input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+    .search-container input:focus {
+      border-color: #0055a5;
+      outline: none;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #003366;
+      color: #fff;
+      font-weight: 500;
+    }
+    tr:nth-child(even) {
+      background-color: #f8f8f8;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    /* Tombol aksi dalam tabel */
+    .action-btn {
+      background-color: #d9534f;
+      border: none;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+    .action-btn:hover {
+      background-color: #c9302c;
+    }
+    /* Tombol hapus semua data diposisikan di bawah tabel */
+    .delete-all-container {
+      text-align: right;
+      margin-top: 15px;
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px 20px;
+      }
+      th, td {
+        padding: 10px;
+      }
+      button {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ANTI DUPLIKASI PERSONEL UNIT POLSATWA</h1>
+  </div>
+  <div class="container">
+    <form id="scheduleForm">
+      <div class="form-group">
+        <label for="namaPetugas">Nama Petugas:</label>
+        <!-- oninput untuk mengubah huruf menjadi kapital secara real time -->
+        <input type="text" id="namaPetugas" name="namaPetugas" required oninput="this.value = this.value.toUpperCase()">
+      </div>
+      <div class="form-group">
+        <label for="kegiatan">Kegiatan:</label>
+        <select id="kegiatan" name="kegiatan" required>
+          <option value="">Pilih Kegiatan</option>
+          <option value="YANLIK">YANLIK</option>
+          <option value="PATROLI K-9">PATROLI K-9</option>
+          <option value="PATROLI TURANGGA">PATROLI TURANGGA</option>
+          <option value="PAM">PAM</option>
+          <option value="PIKET">PIKET</option>
+          <option value="LAINNYA">LAINNYA</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="tanggalMulai">Tanggal Mulai:</label>
+        <input type="date" id="tanggalMulai" name="tanggalMulai" required>
+      </div>
+      <div class="form-group">
+        <label for="tanggalSelesai">Tanggal Selesai:</label>
+        <input type="date" id="tanggalSelesai" name="tanggalSelesai" required>
+      </div>
+      <div class="warning" id="warning" style="display: none;"></div>
+      <button type="submit">Tambah Jadwal</button>
+    </form>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Cari berdasarkan nama, kegiatan, atau tanggal...">
+    </div>
+    <table id="scheduleTable">
+      <thead>
+        <tr>
+          <th>Nama Petugas</th>
+          <th>Kegiatan</th>
+          <th>Tanggal Mulai</th>
+          <th>Tanggal Selesai</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data jadwal akan dimuat di sini -->
+      </tbody>
+    </table>
+    <div class="delete-all-container">
+      <button type="button" id="deleteAllBtn">Hapus Semua Data</button>
+    </div>
+  </div>
+  <script>
+    let scheduleData = [];
+
+    // Fungsi untuk memformat tanggal dari yyyy-mm-dd ke dd/mm/yyyy
+    function formatDate(dateStr) {
+      if (!dateStr) return "";
+      const parts = dateStr.split("-");
+      if (parts.length !== 3) return dateStr;
+      return parts[2] + "/" + parts[1] + "/" + parts[0];
+    }
+
+    // Fungsi untuk merender tabel berdasarkan data dan filter pencarian
+    function renderTable(filter = "") {
+      const tbody = document.getElementById('scheduleTable').querySelector('tbody');
+      tbody.innerHTML = '';
+      scheduleData.forEach((schedule, index) => {
+        const formattedMulai = formatDate(schedule.tanggalMulai);
+        const formattedSelesai = formatDate(schedule.tanggalSelesai);
+        const searchStr = (schedule.namaPetugas + " " + schedule.kegiatan + " " + formattedMulai + " " + formattedSelesai).toLowerCase();
+        if (searchStr.includes(filter.toLowerCase())) {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${schedule.namaPetugas}</td>
+            <td>${schedule.kegiatan}</td>
+            <td>${formattedMulai}</td>
+            <td>${formattedSelesai}</td>
+            <td><button type="button" class="action-btn" onclick="deleteItem(${index})">Hapus</button></td>
+          `;
+          tbody.appendChild(tr);
+        }
+      });
+    }
+
+    // Fungsi untuk menghapus item berdasarkan index
+    function deleteItem(index) {
+      if (confirm("Anda yakin ingin menghapus data ini?")) {
+        scheduleData.splice(index, 1);
+        localStorage.setItem('scheduleData', JSON.stringify(scheduleData));
+        renderTable(document.getElementById('searchInput').value);
+      }
+    }
+
+    // Load data dari localStorage saat halaman dimuat
+    window.onload = function() {
+      const data = localStorage.getItem('scheduleData');
+      if (data) {
+        scheduleData = JSON.parse(data);
+        renderTable();
+      }
+    };
+
+    document.getElementById('scheduleForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Nama petugas diubah ke huruf kapital secara otomatis
+      const namaPetugas = document.getElementById('namaPetugas').value.trim().toUpperCase();
+      const kegiatan = document.getElementById('kegiatan').value;
+      const tanggalMulai = document.getElementById('tanggalMulai').value;
+      const tanggalSelesai = document.getElementById('tanggalSelesai').value;
+      const warningDiv = document.getElementById('warning');
+      warningDiv.style.display = 'none';
+      warningDiv.textContent = '';
+
+      // Validasi: Tanggal Mulai tidak boleh lebih besar dari Tanggal Selesai
+      if (tanggalMulai > tanggalSelesai) {
+        warningDiv.style.display = 'block';
+        warningDiv.textContent = 'Tanggal Mulai tidak boleh lebih besar dari Tanggal Selesai.';
+        return;
+      }
+
+      // Cek tumpang tindih jadwal untuk petugas yang sama
+      const newStart = new Date(tanggalMulai);
+      const newEnd = new Date(tanggalSelesai);
+      const overlap = scheduleData.some(schedule => {
+        if (schedule.namaPetugas.toLowerCase() === namaPetugas.toLowerCase()) {
+          const existingStart = new Date(schedule.tanggalMulai);
+          const existingEnd = new Date(schedule.tanggalSelesai);
+          return (newStart <= existingEnd && newEnd >= existingStart);
+        }
+        return false;
+      });
+
+      if (overlap) {
+        warningDiv.style.display = 'block';
+        warningDiv.textContent = 'Peringatan: Jadwal untuk petugas ini sudah ada pada rentang tanggal tersebut.';
+        return;
+      }
+
+      // Tambah jadwal baru
+      const newSchedule = {
+        namaPetugas,
+        kegiatan,
+        tanggalMulai,
+        tanggalSelesai
+      };
+
+      scheduleData.push(newSchedule);
+      localStorage.setItem('scheduleData', JSON.stringify(scheduleData));
+      renderTable(document.getElementById('searchInput').value);
+      document.getElementById('scheduleForm').reset();
+    });
+
+    // Fitur pencarian
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      renderTable(e.target.value);
+    });
+
+    // Hapus semua data
+    document.getElementById('deleteAllBtn').addEventListener('click', function() {
+      if (confirm("Anda yakin ingin menghapus semua data?")) {
+        scheduleData = [];
+        localStorage.removeItem('scheduleData');
+        renderTable();
+      }
+    });
+  </script>
+</body>
+</html>
